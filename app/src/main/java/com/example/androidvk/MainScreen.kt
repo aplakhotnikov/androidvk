@@ -32,16 +32,25 @@ fun MainScreen() {
 
         Spacer(Modifier.height(16.dp))
 
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Button(onClick = {
+                openPhoneCall(context, inputText)
+            }) {
+                Text(stringResource(R.string.call_button_text));
+            }
+            Button(onClick = {
+                openShareText(context, inputText)
+            }) {
+                Text(stringResource(R.string.share_button_text));
+            }
+        }
+
+        Spacer(Modifier.height(16.dp))
+
         Button(onClick = {
             openInfoActivity(context, inputText);
         }) {
             Text(stringResource(R.string.open_button_text));
-        }
-
-        Button(onClick = {
-            openPhoneCall(context, inputText)
-        }) {
-            Text(stringResource(R.string.call_button_text));
         }
     }
 }
@@ -72,6 +81,22 @@ private fun openPhoneCall(context: Context, text: String) {
 
     val intent = Intent(Intent.ACTION_DIAL).apply {
         data = "tel:${text}".toUri()
+    }
+
+    startActivity(context, intent);
+}
+
+private fun openShareText(context: Context, text: String) {
+    if (!text.isNotBlank()) {
+        showError(context, context.getString(R.string.empty_text_error));
+
+        return;
+    }
+
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain";
+
+        putExtra(Intent.EXTRA_TEXT, text);
     }
 
     startActivity(context, intent);

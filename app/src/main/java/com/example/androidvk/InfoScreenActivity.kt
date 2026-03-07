@@ -9,16 +9,22 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.androidvk.ui.theme.AndroidvkTheme
 
-class MainActivity : ComponentActivity() {
+class InfoScreenActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             AndroidvkTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    MainScreen();
+                    val text = intent.getStringExtra("TEXT") ?: "";
+
+                    InfoScreen(text, onBack = ::onBack);
                 }
             }
         }
+    }
+
+    private fun onBack() {
+        finish();
     }
 }

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">androidvk</string>
+    <string name="hint_text">Введите имя или телефон</string>
+
+    <string name="open_button_text">Открыть вторую Activity</string>
+    <string name="call_button_text">Позвонить другу</string>
+    <string name="share_button_text">Поделиться через…</string>
+    <string name="back_button_text">Назад</string>
+
+    <string name="empty_text_error">Введите текст!</string>
+    <string name="invalid_phone_error">Номер введен неверно!</string>
 </resources>

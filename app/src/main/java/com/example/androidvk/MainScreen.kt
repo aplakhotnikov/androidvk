@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.example.androidvk.ui.theme.AndroidvkTheme
 
 @Composable
@@ -36,6 +37,12 @@ fun MainScreen() {
         }) {
             Text(stringResource(R.string.open_button_text));
         }
+
+        Button(onClick = {
+            openPhoneCall(context, inputText)
+        }) {
+            Text(stringResource(R.string.call_button_text));
+        }
     }
 }
 
@@ -53,12 +60,35 @@ private fun openInfoActivity(context: Context, text: String) {
     context.startActivity(intent);
 }
 
+private fun openPhoneCall(context: Context, text: String) {
+    if (!isPhoneNumber(text)) {
+        showError(
+            context,
+            context.getString(R.string.invalid_phone_error)
+        );
+
+        return;
+    }
+
+    val intent = Intent(Intent.ACTION_DIAL).apply {
+        data = "tel:${text}".toUri()
+    }
+
+    startActivity(context, intent);
+}
+
 private fun showError(context: Context, text: String) {
     Toast.makeText(
         context,
         text,
         Toast.LENGTH_SHORT
     ).show()
+}
+
+private fun startActivity(context: Context, intent: Intent) {
+    if (isActivityResolved(context, intent)) {
+        context.startActivity(intent);
+    }
 }
 
 @Preview()

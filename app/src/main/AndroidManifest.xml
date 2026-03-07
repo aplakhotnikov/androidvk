@@ -28,4 +28,18 @@
         />
     </application>
 
+    <queries>
+        <!-- Для звонков (ACTION_DIAL) -->
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+
+        <!-- Для браузера, если он тоже есть -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http|https" />
+        </intent>
+    </queries>
+
 </manifest>

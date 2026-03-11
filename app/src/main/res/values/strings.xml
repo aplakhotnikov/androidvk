@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">androidvk</string>
+
+    <string name="app_details_category">Категория приложения</string>
+    <string name="app_details_name">Название приложения</string>
+    <string name="app_details_description">Описание приложения</string>
 </resources>

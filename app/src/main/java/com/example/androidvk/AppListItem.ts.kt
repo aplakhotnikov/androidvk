@@ -3,6 +3,8 @@ package com.example.androidvk
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -12,12 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,11 +27,8 @@ fun AppListItem(app: AppItem, onItemClick: (Int) -> Unit) {
         modifier = Modifier.fillMaxWidth().clickable{onItemClick(app.ID)},
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            painter = painterResource(app.iconRes),
-            contentDescription = null,
-            modifier = Modifier.size(50.dp)
-        )
+
+        AppIcon(app);
 
         Column() {
             Text(text = app.name, fontSize = 16.sp, fontWeight = FontWeight.Bold,)
@@ -48,6 +43,17 @@ fun AppListItem(app: AppItem, onItemClick: (Int) -> Unit) {
     )
 }
 
+@Composable
+private fun AppIcon(app: AppItem) {
+    when (app.name.lowercase()) {
+        else -> Icon(
+            imageVector = Icons.Default.Face,
+            contentDescription = null,
+            modifier = Modifier.size(50.dp)
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun Preview() {
@@ -59,7 +65,6 @@ private fun Preview() {
                     name = "Имя",
                     description = "Описание",
                     category = "Категория",
-                    iconRes = R.drawable.ic_launcher_foreground
                 ),
                 {}
             );

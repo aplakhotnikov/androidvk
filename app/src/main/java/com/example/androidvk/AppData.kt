@@ -7,7 +7,6 @@ data class AppItem (
     val name: String,
     val description: String,
     val category: String,
-    @DrawableRes val iconRes: Int,
 )
 
 val appList = listOf(
@@ -16,41 +15,35 @@ val appList = listOf(
         name = "Сбербанк Online - с Салютом",
         description = "Больше чем банк",
         category = "Финансы",
-        iconRes = R.drawable.ic_telegram
     ),
     AppItem(
         ID = 2,
         name = "Яндекс браузер - с Алисой",
         description = "Быстрый и безопасный браузер",
         category = "Инструменты",
-        iconRes = R.drawable.ic_telegram
     ),
     AppItem(
         ID = 3,
-        name = "Яндекс браузер - с Алисой",
-        description = "Быстрый и безопасный браузер",
+        name = "Почта Mail.ru",
+        description = "Почтовый агент для любых ящиков",
         category = "Инструменты",
-        iconRes = R.drawable.ic_telegram
     ),
     AppItem(
         ID = 4,
-        name = "Яндекс браузер - с Алисой",
-        description = "Быстрый и безопасный браузер",
-        category = "Инструменты",
-        iconRes = R.drawable.ic_telegram
+        name = "Яндекс навигатор",
+        description = "Парковки и заправки - по пути",
+        category = "Транспорт",
     ),
     AppItem(
         ID = 5,
-        name = "Яндекс браузер - с Алисой",
-        description = "Быстрый и безопасный браузер",
+        name = "Мой МТС",
+        description = "Мой МТС - центр экосистемы МТС",
         category = "Инструменты",
-        iconRes = R.drawable.ic_telegram
     ),
     AppItem(
         ID = 6,
-        name = "Яндекс браузер - с Алисой",
-        description = "Быстрый и безопасный браузер",
+        name = "Яндекс - с Алисой",
+        description = "Яндекс - поиск всегда под рукой",
         category = "Инструменты",
-        iconRes = R.drawable.ic_telegram
     )
 )

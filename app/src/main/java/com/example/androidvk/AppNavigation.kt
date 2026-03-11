@@ -1,7 +1,6 @@
 package com.example.androidvk
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,7 +12,18 @@ fun AppNavigation(navController: NavHostController) {
         startDestination = "app_list"
     ) {
         composable("app_list") {
-            AppListScreen(onItemClick = {appId -> navController.navigate("app_detail/$appId")})
+            AppListScreen(onItemClick = {appId -> navController.navigate("app_details/$appId")})
+        }
+
+        composable("app_details/{appId}") { backStackEntry ->
+            val appId = backStackEntry.arguments?.getString("appId")?.toIntOrNull() ?: 0
+
+            AppDetailsScreen(
+                appId,
+                onBackClick = {
+                    navController.popBackStack();
+                }
+            );
         }
     }
 }

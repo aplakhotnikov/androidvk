@@ -1,8 +1,6 @@
-package com.example.androidvk
+package com.example.androidvk.data
 
-import androidx.annotation.DrawableRes
-
-data class AppItem (
+data class AppInfo (
     val ID: Int,
     val name: String,
     val description: String,
@@ -10,37 +8,37 @@ data class AppItem (
 )
 
 val appList = listOf(
-    AppItem(
+    AppInfo(
         ID = 1,
         name = "Сбербанк Online - с Салютом",
         description = "Больше чем банк",
         category = "Финансы",
     ),
-    AppItem(
+    AppInfo(
         ID = 2,
         name = "Яндекс браузер - с Алисой",
         description = "Быстрый и безопасный браузер",
         category = "Инструменты",
     ),
-    AppItem(
+    AppInfo(
         ID = 3,
         name = "Почта Mail.ru",
         description = "Почтовый агент для любых ящиков",
         category = "Инструменты",
     ),
-    AppItem(
+    AppInfo(
         ID = 4,
         name = "Яндекс навигатор",
         description = "Парковки и заправки - по пути",
         category = "Транспорт",
     ),
-    AppItem(
+    AppInfo(
         ID = 5,
         name = "Мой МТС",
         description = "Мой МТС - центр экосистемы МТС",
         category = "Инструменты",
     ),
-    AppItem(
+    AppInfo(
         ID = 6,
         name = "Яндекс - с Алисой",
         description = "Яндекс - поиск всегда под рукой",

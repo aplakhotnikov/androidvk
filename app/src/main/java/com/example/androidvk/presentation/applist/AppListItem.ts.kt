@@ -1,4 +1,4 @@
-package com.example.androidvk
+package com.example.androidvk.presentation.applist
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,20 +15,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.androidvk.data.AppInfo
 import com.example.androidvk.ui.theme.AndroidvkTheme
 
 @Composable
-fun AppListItem(app: AppItem, onItemClick: (Int) -> Unit) {
+fun AppListItem(app: AppInfo, onItemClick: (AppInfo) -> Unit, onLogoClick: (AppInfo) -> Unit = {}) {
      Row(
-        modifier = Modifier.fillMaxWidth().clickable{onItemClick(app.ID)},
+        modifier = Modifier.fillMaxWidth().clickable{onItemClick(app)},
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically) {
 
-        AppIcon(app);
+        AppIcon(app, onLogoClick);
 
         Column() {
             Text(text = app.name, fontSize = 16.sp, fontWeight = FontWeight.Bold,)
@@ -44,12 +45,14 @@ fun AppListItem(app: AppItem, onItemClick: (Int) -> Unit) {
 }
 
 @Composable
-private fun AppIcon(app: AppItem) {
+private fun AppIcon(app: AppInfo, onClick: (AppInfo) -> Unit) {
     when (app.name.lowercase()) {
         else -> Icon(
             imageVector = Icons.Default.Face,
             contentDescription = null,
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(50.dp).clickable(onClick = {
+                onClick(app);
+            }),
         )
     }
 }
@@ -60,13 +63,13 @@ private fun Preview() {
     AndroidvkTheme() {
         Surface() {
             AppListItem(
-                app = AppItem(
+                app = AppInfo(
                     ID = 1,
                     name = "Имя",
                     description = "Описание",
                     category = "Категория",
                 ),
-                {}
+                onItemClick = {}
             );
         }
     }

@@ -3,12 +3,9 @@ package com.example.androidvk.presentation.applist
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.androidvk.data.AppDetailsMapper
-import com.example.androidvk.data.ApplicationsApi
-import com.example.androidvk.data.ApplicationsRepositoryImpl
-import com.example.androidvk.data.CategoryMapper
-import com.example.androidvk.domain.AppListUseCase
+import com.example.androidvk.data.appList
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,14 +13,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class AppListViewModel: ViewModel() {
-    private val appListUseCase = AppListUseCase(
-        ApplicationsRepositoryImpl(
-            ApplicationsApi(),
-            AppDetailsMapper(
-                CategoryMapper()
-            ),
-        )
-    );
     private val _state = MutableStateFlow<AppListState>(AppListState.Loading);
     private val _events = Channel<AppListScreenEvent>(Channel.BUFFERED);
     val state: StateFlow<AppListState> = _state.asStateFlow();
@@ -38,7 +27,7 @@ class AppListViewModel: ViewModel() {
             runCatching {
                 _state.value = AppListState.Loading;
 
-                val appList = appListUseCase();
+                delay(5000);
 
                 _state.value = AppListState.Content(appList);
             }.onFailure {

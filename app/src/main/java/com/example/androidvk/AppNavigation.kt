@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.androidvk.presentation.Routes
 import com.example.androidvk.presentation.appdetails.AppDetailsScreen
 import com.example.androidvk.presentation.applist.AppListScreen
 
@@ -12,15 +11,13 @@ import com.example.androidvk.presentation.applist.AppListScreen
 fun AppNavigation(navController: NavHostController) {
     NavHost(
         navController=navController,
-        startDestination = Routes.AppList
+        startDestination = "app_list"
     ) {
-        composable(Routes.AppList) {
-            AppListScreen(onItemClick = {
-                app -> navController.navigate(Routes.createAppDetails(app.ID))
-            })
+        composable("app_list") {
+            AppListScreen(onItemClick = { app -> navController.navigate("app_details/${app.ID}") })
         }
 
-        composable(Routes.AppDetails) { backStackEntry ->
+        composable("app_details/{appId}") { backStackEntry ->
             val appId = backStackEntry.arguments?.getString("appId")?.toIntOrNull() ?: 0
 
             AppDetailsScreen(

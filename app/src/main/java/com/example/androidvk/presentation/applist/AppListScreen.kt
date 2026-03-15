@@ -1,5 +1,6 @@
 package com.example.androidvk.presentation.applist
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,12 +34,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.androidvk.domain.AppDetails
-import com.example.androidvk.domain.Category
+import com.example.androidvk.data.AppInfo
 import com.example.androidvk.ui.theme.AndroidvkTheme
 
 @Composable
-fun AppListScreen(onItemClick: (AppDetails) -> Unit) {
+fun AppListScreen(onItemClick: (AppInfo) -> Unit) {
     val viewModel = viewModel<AppListViewModel>();
     val state by viewModel.state.collectAsStateWithLifecycle();
 
@@ -69,7 +69,7 @@ fun AppListScreen(onItemClick: (AppDetails) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AppListContent(appList: List<AppDetails>, onItemClick: (AppDetails) -> Unit) {
+private fun AppListContent(appList: List<AppInfo>, onItemClick: (AppInfo) -> Unit) {
     val snackbarHostState = remember { SnackbarHostState() }
     val viewModel = viewModel<AppListViewModel>();
 
@@ -88,7 +88,9 @@ private fun AppListContent(appList: List<AppDetails>, onItemClick: (AppDetails) 
     Scaffold(
         snackbarHost = {SnackbarHost(snackbarHostState)},
         containerColor = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary),
         topBar = {
             TopAppBar(
                 modifier = Modifier.padding(16.dp),
@@ -117,7 +119,7 @@ private fun AppListContent(appList: List<AppDetails>, onItemClick: (AppDetails) 
 
     ) { paddingValues ->
         Surface(
-            color = MaterialTheme.colorScheme.background,
+            color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
@@ -143,7 +145,7 @@ private fun AppListContent(appList: List<AppDetails>, onItemClick: (AppDetails) 
     }
 }
 
-private fun onItemLogoClickHandle(app: AppDetails, emitMessageEvent: (msg: String) -> Unit) {
+private fun onItemLogoClickHandle(app: AppInfo, emitMessageEvent: (msg: String) -> Unit) {
     emitMessageEvent("Click по logo приложения ${app.name}")
 }
 
@@ -152,13 +154,7 @@ private fun onItemLogoClickHandle(app: AppDetails, emitMessageEvent: (msg: Strin
 private fun Preview() {
     AndroidvkTheme() {
         Surface() {
-            AppListContent(
-                appList=listOf(
-                    AppDetails(1,"name","", Category.TRANSPORT),
-                    AppDetails(2,"name","", Category.TRANSPORT),
-                    AppDetails(3,"name","", Category.TRANSPORT)),
-                {}
-            )
+            AppListScreen({})
         }
     }
 }

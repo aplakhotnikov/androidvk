@@ -1,6 +1,6 @@
 package com.example.androidvk.presentation.appdetails
 
-import com.example.androidvk.domain.AppDetails
+import com.example.androidvk.data.AppInfo
 
 sealed interface AppDetailsState {
     data object Loading: AppDetailsState;
@@ -10,6 +10,6 @@ sealed interface AppDetailsState {
     ): AppDetailsState;
 
     data class Content (
-        val data: AppDetails
-    ): AppDetailsState
+        val data: AppInfo
+    ): AppDetailsState;
 }

@@ -11,5 +11,5 @@ sealed interface AppDetailsState {
 
     data class Content (
         val data: AppInfo
-    ): AppDetailsState
+    ): AppDetailsState;
 }

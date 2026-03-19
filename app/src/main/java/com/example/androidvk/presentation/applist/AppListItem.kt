@@ -18,12 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.androidvk.data.AppInfo
+import com.example.androidvk.domain.AppDetails
+import com.example.androidvk.domain.Category
 import com.example.androidvk.ui.theme.AndroidvkTheme
 
 @Composable
-fun AppListItem(app: AppInfo, onItemClick: (AppInfo) -> Unit, onLogoClick: (AppInfo) -> Unit = {}) {
+fun AppListItem(app: AppDetails, onItemClick: (AppDetails) -> Unit, onLogoClick: (AppDetails) -> Unit = {}) {
      Row(
         modifier = Modifier.fillMaxWidth().clickable{onItemClick(app)},
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -34,7 +34,7 @@ fun AppListItem(app: AppInfo, onItemClick: (AppInfo) -> Unit, onLogoClick: (AppI
         Column() {
             Text(text = app.name, fontSize = 16.sp, fontWeight = FontWeight.Bold,)
             Text(text = app.description, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f))
-            Text(text = app.category, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
+            Text(text = app.category.label(), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
         }
     }
     HorizontalDivider(
@@ -45,7 +45,7 @@ fun AppListItem(app: AppInfo, onItemClick: (AppInfo) -> Unit, onLogoClick: (AppI
 }
 
 @Composable
-private fun AppIcon(app: AppInfo, onClick: (AppInfo) -> Unit) {
+private fun AppIcon(app: AppDetails, onClick: (AppDetails) -> Unit) {
     when (app.name.lowercase()) {
         else -> Icon(
             imageVector = Icons.Default.Face,
@@ -63,11 +63,11 @@ private fun Preview() {
     AndroidvkTheme() {
         Surface() {
             AppListItem(
-                app = AppInfo(
+                app = AppDetails(
                     ID = 1,
                     name = "Имя",
                     description = "Описание",
-                    category = "Категория",
+                    category = Category.TRANSPORT,
                 ),
                 onItemClick = {}
             );

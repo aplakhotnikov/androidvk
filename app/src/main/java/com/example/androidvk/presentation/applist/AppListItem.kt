@@ -1,5 +1,3 @@
-<<<<<<<< HEAD:app/src/main/java/com/example/androidvk/presentation/applist/AppListItem.ts.kt
-========
 package com.example.androidvk.presentation.applist
 
 import androidx.compose.foundation.clickable
@@ -26,7 +24,7 @@ import com.example.androidvk.ui.theme.AndroidvkTheme
 
 @Composable
 fun AppListItem(app: AppDetails, onItemClick: (AppDetails) -> Unit, onLogoClick: (AppDetails) -> Unit = {}) {
-     Row(
+    Row(
         modifier = Modifier.fillMaxWidth().clickable{onItemClick(app)},
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically) {
@@ -76,4 +74,3 @@ private fun Preview() {
         }
     }
 }
->>>>>>>> e44ba38 (androidvk: task-6):app/src/main/java/com/example/androidvk/presentation/applist/AppListItem.kt

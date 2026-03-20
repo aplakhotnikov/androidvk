@@ -1,8 +1,10 @@
 package com.example.androidvk.data
 
 import com.example.androidvk.domain.AppDetails
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AppDetailsMapper(
+class AppDetailsMapper @Inject constructor(
     private val categoryMapper: CategoryMapper
 ) {
     fun toDomain(dto: AppDetailsDto): AppDetails {

@@ -1,27 +1,21 @@
 package com.example.androidvk.presentation.appdetails
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.SavedStateHandle
-import com.example.androidvk.data.AppDetailsMapper
-import com.example.androidvk.data.ApplicationsApi
-import com.example.androidvk.data.ApplicationsRepositoryImpl
-import com.example.androidvk.data.CategoryMapper
 import com.example.androidvk.domain.ApplicationsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AppDetailsViewModel(private val savedStateHandle: SavedStateHandle): ViewModel() {
-    private val applicationsRepository: ApplicationsRepository = ApplicationsRepositoryImpl(
-        ApplicationsApi(),
-        AppDetailsMapper(
-            CategoryMapper()
-        ),
-    );
-    private val _id: Int = savedStateHandle.get<Int>("id")
+@HiltViewModel
+class AppDetailsViewModel @Inject constructor(
+    private val applicationsRepository: ApplicationsRepository,
+    savedStateHandle: SavedStateHandle): ViewModel() {
+    private val _id: Int = savedStateHandle.get<String>("appId")?.toIntOrNull()
         ?: error("id must be provided")
     private val _state = MutableStateFlow<AppDetailsState>(AppDetailsState.Loading);
 
@@ -45,21 +39,6 @@ class AppDetailsViewModel(private val savedStateHandle: SavedStateHandle): ViewM
                 }
             }.onFailure {
                 _state.value = AppDetailsState.Error();
-            }
-        }
-    }
-
-    companion object {
-        fun provideFactory(id: Int): ViewModelProvider.Factory {
-            return object : ViewModelProvider.Factory {
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return AppDetailsViewModel(
-                        savedStateHandle = SavedStateHandle(
-                            mapOf("id" to id)
-                        )
-                    ) as T
-                }
             }
         }
     }

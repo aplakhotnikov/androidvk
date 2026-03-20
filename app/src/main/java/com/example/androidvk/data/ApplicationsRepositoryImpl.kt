@@ -2,8 +2,10 @@ package com.example.androidvk.data
 
 import com.example.androidvk.domain.AppDetails
 import com.example.androidvk.domain.ApplicationsRepository
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 
-class ApplicationsRepositoryImpl(
+class ApplicationsRepositoryImpl @Inject constructor(
     private val applicationsApi: ApplicationsApi,
     private val appDetailsMapper: AppDetailsMapper
 ): ApplicationsRepository {

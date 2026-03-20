@@ -8,22 +8,19 @@ import com.example.androidvk.data.ApplicationsApi
 import com.example.androidvk.data.ApplicationsRepositoryImpl
 import com.example.androidvk.data.CategoryMapper
 import com.example.androidvk.domain.AppListUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AppListViewModel: ViewModel() {
-    private val appListUseCase = AppListUseCase(
-        ApplicationsRepositoryImpl(
-            ApplicationsApi(),
-            AppDetailsMapper(
-                CategoryMapper()
-            ),
-        )
-    );
+@HiltViewModel
+class AppListViewModel @Inject constructor(
+    private val appListUseCase: AppListUseCase
+): ViewModel() {
     private val _state = MutableStateFlow<AppListState>(AppListState.Loading);
     private val _events = Channel<AppListScreenEvent>(Channel.BUFFERED);
     val state: StateFlow<AppListState> = _state.asStateFlow();

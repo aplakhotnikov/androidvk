@@ -1,44 +1,37 @@
 package com.example.androidvk.data
 
-data class AppInfo (
-    val ID: Int,
-    val name: String,
-    val description: String,
-    val category: String,
-)
-
 val appList = listOf(
-    AppInfo(
+    AppDetailsDto(
         ID = 1,
         name = "Сбербанк Online - с Салютом",
         description = "Больше чем банк",
         category = "Финансы",
     ),
-    AppInfo(
+    AppDetailsDto(
         ID = 2,
         name = "Яндекс браузер - с Алисой",
         description = "Быстрый и безопасный браузер",
         category = "Инструменты",
     ),
-    AppInfo(
+    AppDetailsDto(
         ID = 3,
         name = "Почта Mail.ru",
         description = "Почтовый агент для любых ящиков",
         category = "Инструменты",
     ),
-    AppInfo(
+    AppDetailsDto(
         ID = 4,
         name = "Яндекс навигатор",
         description = "Парковки и заправки - по пути",
         category = "Транспорт",
     ),
-    AppInfo(
+    AppDetailsDto(
         ID = 5,
         name = "Мой МТС",
         description = "Мой МТС - центр экосистемы МТС",
         category = "Инструменты",
     ),
-    AppInfo(
+    AppDetailsDto(
         ID = 6,
         name = "Яндекс - с Алисой",
         description = "Яндекс - поиск всегда под рукой",

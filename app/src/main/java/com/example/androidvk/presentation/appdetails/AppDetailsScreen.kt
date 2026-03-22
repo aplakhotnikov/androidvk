@@ -1,14 +1,12 @@
 package com.example.androidvk.presentation.appdetails
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +32,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androidvk.R
-import com.example.androidvk.data.AppInfo
+import com.example.androidvk.domain.AppDetails
+import com.example.androidvk.domain.Category
 import com.example.androidvk.ui.theme.AndroidvkTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,9 +45,7 @@ fun AppDetailsScreen(appID: Int, onBackClick: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle();
 
     Scaffold(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.background),
-
+        containerColor = MaterialTheme.colorScheme.primary,
         topBar = {
             TopAppBar(title={}, colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primary
@@ -62,41 +60,46 @@ fun AppDetailsScreen(appID: Int, onBackClick: () -> Unit) {
             })
         }
     ) { contentPadding ->
+        Surface(
+            color = MaterialTheme.colorScheme.background,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(contentPadding)
+                .clip(RoundedCornerShape(
+                    topStart = 24.dp,
+                    topEnd = 24.dp
+                ))) {
+                    when (val currState = state) {
+                        is AppDetailsState.Loading -> {
+                            Box(
+                                Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator();
+                            }
+                        }
 
-        when(val currState = state) {
-            is AppDetailsState.Loading -> {
-                Box(
-                    Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator();
+                        is AppDetailsState.Error -> {
+                            Box(
+                                Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(currState.message);
+                            }
+                        }
+
+                        is AppDetailsState.Content -> {
+                            AppDetailsContent(currState.data);
+                        }
+                    }
                 }
-            }
-
-            is AppDetailsState.Error -> {
-                Box(
-                    Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(currState.message);
-                }
-            }
-
-            is AppDetailsState.Content -> {
-                AppDetailsContent(currState.data, contentPadding);
-            }
-        }
     }
 }
 
 @Composable
-fun AppDetailsContent(app: AppInfo, contentPadding: PaddingValues) {
-    Box(Modifier.padding(24.dp)) {
+fun AppDetailsContent(app: AppDetails) {
         Column(
-            Modifier
-                .fillMaxSize()
-                .safeDrawingPadding()
-                .padding(contentPadding)
+            modifier = Modifier.padding(24.dp)
         ) {
             Text(
                 text = stringResource(R.string.app_details_category),
@@ -104,7 +107,7 @@ fun AppDetailsContent(app: AppInfo, contentPadding: PaddingValues) {
                 style = MaterialTheme.typography.bodyLarge
             )
             Text(
-                text = app.category ?: "",
+                text = app.category.label(),
                 fontSize = 18.sp,
             )
             Spacer(Modifier.height(16.dp))
@@ -114,7 +117,7 @@ fun AppDetailsContent(app: AppInfo, contentPadding: PaddingValues) {
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                text = app.name ?: "",
+                text = app.name,
                 fontSize = 18.sp,
             )
             Spacer(Modifier.height(16.dp))
@@ -125,19 +128,21 @@ fun AppDetailsContent(app: AppInfo, contentPadding: PaddingValues) {
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                text = app.description ?: "",
+                text = app.description,
                 fontSize = 18.sp
             )
         }
-    }
+
 }
 
 @Preview()
 @Composable()
 private fun Preview() {
     AndroidvkTheme() {
-        Surface() {
-            AppDetailsScreen(1, {});
+        Surface {
+            AppDetailsContent(
+                AppDetails(1, "name", "description", Category.TRANSPORT)
+            );
         }
     }
 }

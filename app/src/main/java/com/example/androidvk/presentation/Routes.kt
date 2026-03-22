@@ -1,4 +1,4 @@
-package com.example.androidvk.domain
+package com.example.androidvk.presentation
 
 object Routes {
     val AppList = "app_list";

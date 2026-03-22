@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androidvk.domain.AppDetails
@@ -39,7 +40,7 @@ import com.example.androidvk.ui.theme.AndroidvkTheme
 
 @Composable
 fun AppListScreen(onItemClick: (AppDetails) -> Unit) {
-    val viewModel = viewModel<AppListViewModel>();
+    val viewModel = hiltViewModel<AppListViewModel>();
     val state by viewModel.state.collectAsStateWithLifecycle();
 
     when(val currState = state) {

@@ -21,10 +21,7 @@ fun AppNavigation(navController: NavHostController) {
         }
 
         composable(Routes.AppDetails) { backStackEntry ->
-            val appId = backStackEntry.arguments?.getString("appId")?.toIntOrNull() ?: 0
-
             AppDetailsScreen(
-                appId,
                 onBackClick = {
                     navController.popBackStack();
                 }

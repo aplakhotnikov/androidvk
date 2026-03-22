@@ -1,4 +1,5 @@
 package com.example.androidvk.data
+
 val appList = listOf(
     AppDetailsDto(
         ID = 1,

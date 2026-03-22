@@ -24,7 +24,7 @@ import com.example.androidvk.ui.theme.AndroidvkTheme
 
 @Composable
 fun AppListItem(app: AppDetails, onItemClick: (AppDetails) -> Unit, onLogoClick: (AppDetails) -> Unit = {}) {
-     Row(
+    Row(
         modifier = Modifier.fillMaxWidth().clickable{onItemClick(app)},
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically) {

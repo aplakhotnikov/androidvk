@@ -4,9 +4,4 @@
     <string name="app_details_category">Категория приложения</string>
     <string name="app_details_name">Название приложения</string>
     <string name="app_details_description">Описание приложения</string>
-
-    <string name="categories_tools">Инструменты</string>
-    <string name="categories_finances">Финансы</string>
-    <string name="categories_transport">Транспорт</string>
-    <string name="categories_manufacturer">Производитель</string>
 </resources>

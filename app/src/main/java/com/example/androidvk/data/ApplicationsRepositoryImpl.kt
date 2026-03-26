@@ -3,7 +3,6 @@ package com.example.androidvk.data
 import com.example.androidvk.domain.AppDetails
 import com.example.androidvk.domain.ApplicationsRepository
 import jakarta.inject.Inject
-import jakarta.inject.Singleton
 
 class ApplicationsRepositoryImpl @Inject constructor(
     private val applicationsApi: ApplicationsApi,
@@ -15,7 +14,7 @@ class ApplicationsRepositoryImpl @Inject constructor(
         return listDto.map {dto ->  appDetailsMapper.toDomain(dto);};
     }
 
-    override suspend fun getAppDetails(id: Int): AppDetails? {
+    override suspend fun getAppDetails(id: String): AppDetails? {
         val dto = applicationsApi.getAppDetails(id);
 
         return dto?.let { dto -> appDetailsMapper.toDomain(dto) }

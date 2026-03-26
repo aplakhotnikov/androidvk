@@ -35,7 +35,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androidvk.domain.AppDetails
-import com.example.androidvk.domain.Category
 import com.example.androidvk.ui.theme.AndroidvkTheme
 
 @Composable
@@ -155,9 +154,9 @@ private fun Preview() {
         Surface() {
             AppListContent(
                 appList=listOf(
-                    AppDetails(1,"name","", Category.TRANSPORT),
-                    AppDetails(2,"name","", Category.TRANSPORT),
-                    AppDetails(3,"name","", Category.TRANSPORT)),
+                    AppDetails("1","name","", "Развлечения", ""),
+                    AppDetails("2","name","", "Развлечения", ""),
+                    AppDetails("3","name","", "Развлечения", "")),
                 {}
             )
         }

@@ -1,8 +1,9 @@
 package com.example.androidvk.domain
 
 data class AppDetails (
-    val ID: Int,
+    val ID: String,
     val name: String,
     val description: String,
-    val category: Category,
+    val category: String,
+    val iconUrl: String,
 )

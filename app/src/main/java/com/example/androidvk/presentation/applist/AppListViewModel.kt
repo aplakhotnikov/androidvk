@@ -1,12 +1,7 @@
 package com.example.androidvk.presentation.applist
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.androidvk.data.AppDetailsMapper
-import com.example.androidvk.data.ApplicationsApi
-import com.example.androidvk.data.ApplicationsRepositoryImpl
-import com.example.androidvk.data.CategoryMapper
 import com.example.androidvk.domain.AppListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -45,7 +40,6 @@ class AppListViewModel @Inject constructor(
     }
 
     fun emitMessageEvent(msg: String) {
-        Log.d("PAA", "emitMessageEvent $msg")
         viewModelScope.launch {
             _events.send(
                 AppListScreenEvent.ShowSnackbar(msg)

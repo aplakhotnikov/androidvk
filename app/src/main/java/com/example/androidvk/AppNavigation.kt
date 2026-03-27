@@ -20,7 +20,7 @@ fun AppNavigation(navController: NavHostController) {
             })
         }
 
-        composable(Routes.AppDetails) { backStackEntry ->
+        composable(Routes.AppDetails) {
             AppDetailsScreen(
                 onBackClick = {
                     navController.popBackStack();

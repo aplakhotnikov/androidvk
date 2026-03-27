@@ -1,6 +1,8 @@
 package com.example.androidvk.domain
 
-class AppListUseCase(private val applicationsRepository: ApplicationsRepository) {
+import jakarta.inject.Inject
+
+class AppListUseCase @Inject constructor(private val applicationsRepository: ApplicationsRepository) {
     suspend operator fun invoke(): List<AppDetails> {
         val appList = this.applicationsRepository.getAppList();
 

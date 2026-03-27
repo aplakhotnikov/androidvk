@@ -29,19 +29,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androidvk.R
 import com.example.androidvk.domain.AppDetails
 import com.example.androidvk.domain.Category
 import com.example.androidvk.ui.theme.AndroidvkTheme
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppDetailsScreen(appID: Int, onBackClick: () -> Unit) {
-    val viewModel = viewModel<AppDetailsViewModel>(
-        factory = AppDetailsViewModel.provideFactory(appID)
-    );
+fun AppDetailsScreen(onBackClick: () -> Unit) {
+    val viewModel = hiltViewModel<AppDetailsViewModel>();
     val state by viewModel.state.collectAsStateWithLifecycle();
 
     Scaffold(

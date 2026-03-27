@@ -1,9 +1,11 @@
 package com.example.androidvk.data
 
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
-class ApplicationsApi {
+class ApplicationsApi @Inject constructor() {
     suspend fun getAppList(): List<AppDetailsDto> {
         delay(5.seconds);
 

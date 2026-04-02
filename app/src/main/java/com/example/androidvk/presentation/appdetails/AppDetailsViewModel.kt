@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,21 +27,27 @@ class AppDetailsViewModel @Inject constructor(
         getData();
     }
 
+    fun toggleWishlist() {
+        viewModelScope.launch {
+            appDetailsRepository.toggleWishlist(_id);
+        }
+    }
+
     private fun getData() {
         viewModelScope.launch {
-            runCatching {
-                _state.value = AppDetailsState.Loading;
+            _state.value = AppDetailsState.Loading;
 
-                val data = appDetailsRepository.getAppDetails(_id);
-
+            appDetailsRepository.getAppDetails(_id)
+                .catch { throwable ->
+                    Log.e("AppDetailsViewModel", "getData", throwable);
+                    _state.value = AppDetailsState.Error();
+                }
+                .collect { data ->
                 if (data != null) {
                     _state.value = AppDetailsState.Content(data);
                 } else {
                     _state.value = AppDetailsState.Error("Приложение с ID $_id не найдено")
                 }
-            }.onFailure { throwable ->
-                Log.e("AppDetailsViewModel", "getData", throwable);
-                _state.value = AppDetailsState.Error();
             }
         }
     }

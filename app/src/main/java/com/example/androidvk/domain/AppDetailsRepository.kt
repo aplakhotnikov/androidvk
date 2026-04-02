@@ -1,5 +1,9 @@
 package com.example.androidvk.domain
 
+import kotlinx.coroutines.flow.Flow
+
 interface AppDetailsRepository {
-    suspend fun getAppDetails(id: String): AppDetails?;
+    fun getAppDetails(id: String): Flow<AppDetails?>;
+
+    suspend fun toggleWishlist(id: String);
 }

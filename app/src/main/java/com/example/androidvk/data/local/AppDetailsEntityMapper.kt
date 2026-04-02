@@ -9,7 +9,8 @@ class AppDetailsEntityMapper {
             name = domain.name,
             description = domain.description,
             category = domain.category,
-            iconUrl = domain.iconUrl
+            iconUrl = domain.iconUrl,
+            isInWishlist = domain.isInWishlist
         );
     }
 
@@ -19,7 +20,8 @@ class AppDetailsEntityMapper {
             name = entity.name,
             description = entity.description,
             category = entity.category,
-            iconUrl = entity.iconUrl
+            iconUrl = entity.iconUrl,
+            isInWishlist = entity.isInWishlist,
         );
     }
 }

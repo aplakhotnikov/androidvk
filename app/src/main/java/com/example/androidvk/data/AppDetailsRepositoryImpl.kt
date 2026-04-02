@@ -6,6 +6,9 @@ import com.example.androidvk.domain.AppDetails
 import com.example.androidvk.domain.AppDetailsRepository
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class AppDetailsRepositoryImpl @Inject constructor(
@@ -14,9 +17,9 @@ class AppDetailsRepositoryImpl @Inject constructor(
     private val dao: AppDetailsDao,
     private val appDetailsEntityMapper: AppDetailsEntityMapper,
 ): AppDetailsRepository {
-    override suspend fun getAppDetails(id: String): AppDetails? {
-        return withContext(Dispatchers.IO) {
-            val appDetailsEntity = dao.getAppDetails(id);
+    override fun getAppDetails(id: String): Flow<AppDetails?> {
+        return dao.getAppDetails(id).map {
+            appDetailsEntity ->
 
             if (appDetailsEntity != null) {
                 appDetailsEntityMapper.toDomain(appDetailsEntity);
@@ -26,12 +29,24 @@ class AppDetailsRepositoryImpl @Inject constructor(
                 val appDetails = dto?.let { dto -> appDetailsMapper.toDomain(dto) }
 
                 if (appDetails != null) {
-                    dao.insertAppDetails(
-                        appDetailsEntityMapper.toEntity(appDetails)
-                    );
+                    withContext(Dispatchers.IO) {
+                        dao.insertAppDetails(
+                            appDetailsEntityMapper.toEntity(appDetails)
+                        );
+                    }
                 }
 
                 appDetails;
+            }
+        }
+    }
+
+    override suspend fun toggleWishlist(id: String) {
+        withContext(Dispatchers.IO) {
+            val currData = dao.getAppDetails(id).first();
+
+            currData?.let {
+                dao.updateWishlistStatus(id, !it.isInWishlist);
             }
         }
     }

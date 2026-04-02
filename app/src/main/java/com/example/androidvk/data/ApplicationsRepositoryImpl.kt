@@ -13,10 +13,4 @@ class ApplicationsRepositoryImpl @Inject constructor(
 
         return listDto.map {dto ->  appDetailsMapper.toDomain(dto);};
     }
-
-    override suspend fun getAppDetails(id: String): AppDetails? {
-        val dto = applicationsApi.getAppDetails(id);
-
-        return dto?.let { dto -> appDetailsMapper.toDomain(dto) }
-    }
 }

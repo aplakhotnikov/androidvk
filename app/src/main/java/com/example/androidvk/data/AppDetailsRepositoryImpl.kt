@@ -20,24 +20,24 @@ class AppDetailsRepositoryImpl @Inject constructor(
     override fun getAppDetails(id: String): Flow<AppDetails?> {
         return dao.getAppDetails(id).map {
             appDetailsEntity ->
+                if (appDetailsEntity != null) {
+                    appDetailsEntityMapper.toDomain(appDetailsEntity);
+                } else {
+                    val dto = applicationsApi.getAppDetails(id);
 
-            if (appDetailsEntity != null) {
-                appDetailsEntityMapper.toDomain(appDetailsEntity);
-            } else {
-                val dto = applicationsApi.getAppDetails(id);
+                    dto?.let {
+                        dto ->
+                            val domain = appDetailsMapper.toDomain(dto);
 
-                val appDetails = dto?.let { dto -> appDetailsMapper.toDomain(dto) }
+                            withContext(Dispatchers.IO) {
+                                dao.insertAppDetails(
+                                    appDetailsEntityMapper.toEntity(domain)
+                                );
+                            }
 
-                if (appDetails != null) {
-                    withContext(Dispatchers.IO) {
-                        dao.insertAppDetails(
-                            appDetailsEntityMapper.toEntity(appDetails)
-                        );
+                            domain;
                     }
                 }
-
-                appDetails;
-            }
         }
     }
 

@@ -1,6 +1,5 @@
 package com.example.androidvk.presentation.appdetails
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.SavedStateHandle
@@ -24,7 +23,7 @@ class AppDetailsViewModel @Inject constructor(
     val state: StateFlow<AppDetailsState> = this._state.asStateFlow();
 
     init {
-        getData();
+        observeData();
     }
 
     fun toggleWishlist() {
@@ -33,22 +32,21 @@ class AppDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun getData() {
+    private fun observeData() {
         viewModelScope.launch {
             _state.value = AppDetailsState.Loading;
 
             appDetailsRepository.getAppDetails(_id)
-                .catch { throwable ->
-                    Log.e("AppDetailsViewModel", "getData", throwable);
+                .catch {
                     _state.value = AppDetailsState.Error();
                 }
                 .collect { data ->
-                if (data != null) {
-                    _state.value = AppDetailsState.Content(data);
-                } else {
-                    _state.value = AppDetailsState.Error("Приложение с ID $_id не найдено")
+                    if (data != null) {
+                        _state.value = AppDetailsState.Content(data);
+                    } else {
+                        _state.value = AppDetailsState.Error("Приложение с ID $_id не найдено")
+                    }
                 }
-            }
         }
     }
 }

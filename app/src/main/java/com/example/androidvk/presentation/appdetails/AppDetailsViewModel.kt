@@ -1,6 +1,5 @@
 package com.example.androidvk.presentation.appdetails
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.SavedStateHandle
@@ -9,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,25 +23,30 @@ class AppDetailsViewModel @Inject constructor(
     val state: StateFlow<AppDetailsState> = this._state.asStateFlow();
 
     init {
-        getData();
+        observeData();
     }
 
-    private fun getData() {
+    fun toggleWishlist() {
         viewModelScope.launch {
-            runCatching {
-                _state.value = AppDetailsState.Loading;
+            appDetailsRepository.toggleWishlist(_id);
+        }
+    }
 
-                val data = appDetailsRepository.getAppDetails(_id);
+    private fun observeData() {
+        viewModelScope.launch {
+            _state.value = AppDetailsState.Loading;
 
-                if (data != null) {
-                    _state.value = AppDetailsState.Content(data);
-                } else {
-                    _state.value = AppDetailsState.Error("Приложение с ID $_id не найдено")
+            appDetailsRepository.getAppDetails(_id)
+                .catch {
+                    _state.value = AppDetailsState.Error();
                 }
-            }.onFailure { throwable ->
-                Log.e("AppDetailsViewModel", "getData", throwable);
-                _state.value = AppDetailsState.Error();
-            }
+                .collect { data ->
+                    if (data != null) {
+                        _state.value = AppDetailsState.Content(data);
+                    } else {
+                        _state.value = AppDetailsState.Error("Приложение с ID $_id не найдено")
+                    }
+                }
         }
     }
 }

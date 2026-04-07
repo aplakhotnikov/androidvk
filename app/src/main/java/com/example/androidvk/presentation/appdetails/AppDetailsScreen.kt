@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +45,10 @@ import com.example.androidvk.ui.theme.AndroidvkTheme
 fun AppDetailsScreen(onBackClick: () -> Unit) {
     val viewModel = hiltViewModel<AppDetailsViewModel>();
     val state by viewModel.state.collectAsStateWithLifecycle();
+    val isInWishlist = when (val currState = state) {
+        is AppDetailsState.Content -> currState.data.isInWishlist
+        else -> false
+    }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.primary,
@@ -54,6 +61,28 @@ fun AppDetailsScreen(onBackClick: () -> Unit) {
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.surface,
+                    )
+                }
+            }, actions = {
+                IconButton(
+                    onClick = { viewModel.toggleWishlist() },
+                ) {
+                    Icon(
+                        imageVector = if (isInWishlist) {
+                            Icons.Filled.Favorite
+                        } else {
+                            Icons.Outlined.Favorite
+                        },
+                        contentDescription = if (isInWishlist) {
+                            "Убрать из избранного"
+                        } else {
+                            "Добавить в избранное"
+                        },
+                        tint = if (isInWishlist) {
+                            Color.Red
+                        } else {
+                            Color.White
+                        }
                     )
                 }
             })
@@ -100,6 +129,7 @@ fun AppDetailsContent(app: AppDetails) {
         Column(
             modifier = Modifier.padding(24.dp)
         ) {
+            Spacer(Modifier.height(16.dp))
             AsyncImage(
                 model = app.iconUrl,
                 contentDescription = null,
@@ -155,7 +185,7 @@ private fun Preview() {
                     "name",
                     "description",
                     "Развлечения",
-                    ""
+                    "",
                 )
             );
         }

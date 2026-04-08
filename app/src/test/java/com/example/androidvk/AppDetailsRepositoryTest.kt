@@ -23,38 +23,46 @@ import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
 class AppDetailsRepositoryTest {
+    private val testId = "aaaa-bbbb-cccc-1234";
+
+    private val testEntity = AppDetailsEntity(
+        id = testId,
+        name = "Test App",
+        description = "Test Description",
+        category = "Tools",
+        iconUrl = "",
+        isInWishlist = false
+    );
+
+    private val testDomain = AppDetails(
+        ID = testId,
+        name = "Test App",
+        description = "Test Description",
+        category = "Tools",
+        iconUrl = "",
+        isInWishlist = false
+    );
+
+    private val testDto = AppDetailsDto(
+        id = testId,
+        name = "Test App",
+        description = "Test Description",
+        category = "Tools",
+        iconUrl = ""
+    );
+
+    private val applicationsApi = mock<ApplicationsApi>();
+    private val appDetailsMapper = mock<AppDetailsMapper>();
+    private val dao = mock<AppDetailsDao>();
+    private val appDetailsEntityMapper = mock<AppDetailsEntityMapper>();
+    private val appDetailsRepository = AppDetailsRepositoryImpl(applicationsApi,appDetailsMapper,dao, appDetailsEntityMapper);
+
     @Test
     fun `getAppDetails should return cached data`() {
         runBlocking {
-            val testId = "aaaa-bbbb-cccc-1234";
-
-            val testEntity = AppDetailsEntity(
-                id = testId,
-                name = "Test App",
-                description = "Test Description",
-                category = "Tools",
-                iconUrl = "",
-                isInWishlist = false
-            );
-
-            val testDomain = AppDetails(
-                ID = testId,
-                name = "Test App",
-                description = "Test Description",
-                category = "Tools",
-                iconUrl = "",
-                isInWishlist = false
-            );
-
-            val applicationsApi = mock<ApplicationsApi>();
-            val appDetailsMapper = mock<AppDetailsMapper>();
-            val dao = mock<AppDetailsDao>();
-            val appDetailsEntityMapper = mock<AppDetailsEntityMapper>();
-
             whenever(dao.getAppDetails(testId)).thenReturn(flowOf(testEntity));
             whenever(appDetailsEntityMapper.toDomain(testEntity)).thenReturn(testDomain);
 
-            val appDetailsRepository = AppDetailsRepositoryImpl(applicationsApi,appDetailsMapper,dao, appDetailsEntityMapper);
             val result = appDetailsRepository.getAppDetails(testId).first();
 
             assertEquals(testDomain, result);
@@ -66,45 +74,11 @@ class AppDetailsRepositoryTest {
     @Test
     fun `getAppDetails should fetch from network when cache is empty`() {
         runBlocking {
-            val testId = "aaaa-bbbb-cccc-1234";
-
-            val testEntity = AppDetailsEntity(
-                id = testId,
-                name = "Test App",
-                description = "Test Description",
-                category = "Tools",
-                iconUrl = "",
-                isInWishlist = false
-            );
-
-            val testDomain = AppDetails(
-                ID = testId,
-                name = "Test App",
-                description = "Test Description",
-                category = "Tools",
-                iconUrl = "",
-                isInWishlist = false
-            );
-
-            val testDto = AppDetailsDto(
-                id = testId,
-                name = "Test App",
-                description = "Test Description",
-                category = "Tools",
-                iconUrl = ""
-            );
-
-            val applicationsApi = mock<ApplicationsApi>();
-            val appDetailsMapper = mock<AppDetailsMapper>();
-            val dao = mock<AppDetailsDao>();
-            val appDetailsEntityMapper = mock<AppDetailsEntityMapper>();
-
             whenever(dao.getAppDetails(testId)).thenReturn(flowOf(null));
             whenever(applicationsApi.getAppDetails(testId)).thenReturn(testDto);
             whenever(appDetailsMapper.toDomain(testDto)).thenReturn(testDomain);
             whenever(appDetailsEntityMapper.toEntity(testDomain)).thenReturn(testEntity);
 
-            val appDetailsRepository = AppDetailsRepositoryImpl(applicationsApi,appDetailsMapper,dao, appDetailsEntityMapper);
             val result = appDetailsRepository.getAppDetails(testId).first();
 
             assertEquals(testDomain, result);
@@ -116,25 +90,7 @@ class AppDetailsRepositoryTest {
     @Test
     fun `toggleWishlist should update status from false to true`() {
         runBlocking {
-            val testId = "aaaa-bbbb-cccc-1234";
-
-            val testEntity = AppDetailsEntity(
-                id = testId,
-                name = "Test App",
-                description = "Test Description",
-                category = "Tools",
-                iconUrl = "",
-                isInWishlist = false
-            );
-
-            val applicationsApi = mock<ApplicationsApi>();
-            val appDetailsMapper = mock<AppDetailsMapper>();
-            val dao = mock<AppDetailsDao>();
-            val appDetailsEntityMapper = mock<AppDetailsEntityMapper>();
-
             whenever(dao.getAppDetails(testId)).thenReturn(flowOf(testEntity));
-
-            val appDetailsRepository = AppDetailsRepositoryImpl(applicationsApi,appDetailsMapper,dao, appDetailsEntityMapper);
 
             appDetailsRepository.toggleWishlist(testId);
             verify(dao).updateWishlistStatus(testId, true);
@@ -144,25 +100,9 @@ class AppDetailsRepositoryTest {
     @Test
     fun `toggleWishlist should update status from true to false`() {
         runBlocking {
-            val testId = "aaaa-bbbb-cccc-1234";
-
-            val testEntity = AppDetailsEntity(
-                id = testId,
-                name = "Test App",
-                description = "Test Description",
-                category = "Tools",
-                iconUrl = "",
-                isInWishlist = true
-            );
-
-            val applicationsApi = mock<ApplicationsApi>();
-            val appDetailsMapper = mock<AppDetailsMapper>();
-            val dao = mock<AppDetailsDao>();
-            val appDetailsEntityMapper = mock<AppDetailsEntityMapper>();
+            val testEntity = testEntity.copy(isInWishlist = true);
 
             whenever(dao.getAppDetails(testId)).thenReturn(flowOf(testEntity));
-
-            val appDetailsRepository = AppDetailsRepositoryImpl(applicationsApi,appDetailsMapper,dao, appDetailsEntityMapper);
 
             appDetailsRepository.toggleWishlist(testId);
             verify(dao).updateWishlistStatus(testId, false);

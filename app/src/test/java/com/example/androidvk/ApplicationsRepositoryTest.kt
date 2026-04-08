@@ -21,6 +21,14 @@ import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
 class ApplicationsRepositoryTest {
+    private val applicationsApi = mock<ApplicationsApi>();
+    private val appDetailsMapper = mock<AppDetailsMapper>();
+
+    private val applicationsRepository = ApplicationsRepositoryImpl(
+        applicationsApi,
+        appDetailsMapper
+    );
+
     @Test
     fun `getAppList should return list of apps when API returns data`() {
         runBlocking {
@@ -60,17 +68,9 @@ class ApplicationsRepositoryTest {
 
             val dtoList = listOf(testDto1, testDto2);
 
-            val applicationsApi = mock<ApplicationsApi>();
-            val appDetailsMapper = mock<AppDetailsMapper>();
-
             whenever(applicationsApi.getAppList()).thenReturn(dtoList);
             whenever(appDetailsMapper.toDomain(testDto1)).thenReturn(testDomain1);
             whenever(appDetailsMapper.toDomain(testDto2)).thenReturn(testDomain2);
-
-            val applicationsRepository = ApplicationsRepositoryImpl(
-                applicationsApi,
-                appDetailsMapper
-            );
 
             val result = applicationsRepository.getAppList();
 
@@ -85,15 +85,8 @@ class ApplicationsRepositoryTest {
     @Test
     fun `getAppList should return empty list when API returns empty list`() {
         runBlocking {
-            val applicationsApi = mock<ApplicationsApi>();
-            val appDetailsMapper = mock<AppDetailsMapper>();
-
             whenever(applicationsApi.getAppList()).thenReturn(emptyList());
 
-            val applicationsRepository = ApplicationsRepositoryImpl(
-                applicationsApi,
-                appDetailsMapper
-            );
             val result = applicationsRepository.getAppList();
 
             assertTrue(result.isEmpty());

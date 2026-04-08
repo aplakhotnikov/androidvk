@@ -1,0 +1,38 @@
+package com.example.androidvk
+
+import com.example.androidvk.data.local.AppDetailsEntity
+import com.example.androidvk.data.local.AppDetailsEntityMapperImpl
+import com.example.androidvk.domain.AppDetails
+import junit.framework.TestCase.assertEquals
+import org.junit.Test
+
+class AppDetailsEntityMapperTest {
+    private val domain = AppDetails(
+        ID = "aaaa-bbbb-cccc-1234",
+        name = "Test App",
+        description = "Test Description",
+        category = "Tools",
+        iconUrl = ""
+    );
+
+    private val entity = AppDetailsEntity(
+        id = "aaaa-bbbb-cccc-1234",
+        name = "Test App",
+        description = "Test Description",
+        category = "Tools",
+        iconUrl = "",
+        isInWishlist = false
+    );
+
+    private val mapper = AppDetailsEntityMapperImpl();
+
+    @Test
+    fun `toDomain should map Entity to Domain correctly`() {
+        assertEquals(mapper.toDomain(entity), domain);
+    }
+
+    @Test
+    fun `toEntity should map Domain to Entity correctly`() {
+        assertEquals(mapper.toEntity(domain), entity);
+    }
+}

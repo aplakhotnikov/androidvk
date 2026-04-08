@@ -3,12 +3,14 @@ package com.example.androidvk.di
 import android.app.Application
 import androidx.room.Room
 import com.example.androidvk.data.AppDetailsMapper
+import com.example.androidvk.data.AppDetailsMapperImpl
 import com.example.androidvk.data.AppDetailsRepositoryImpl
 import com.example.androidvk.data.ApplicationsApi
 import com.example.androidvk.data.ApplicationsRepositoryImpl
 import com.example.androidvk.data.local.AppDatabase
 import com.example.androidvk.data.local.AppDetailsDao
 import com.example.androidvk.data.local.AppDetailsEntityMapper
+import com.example.androidvk.data.local.AppDetailsEntityMapperImpl
 import com.example.androidvk.domain.AppDetailsRepository
 import com.example.androidvk.domain.ApplicationsRepository
 import com.example.androidvk.domain.Constants
@@ -86,13 +88,13 @@ object DataModule {
     @Provides
     @Singleton
     fun provideAppDetailsEntityMapper(): AppDetailsEntityMapper {
-        return AppDetailsEntityMapper()
+        return AppDetailsEntityMapperImpl()
     }
 
     @Singleton
     @Provides
     fun provideAppDetailsMapper(): AppDetailsMapper {
-        return AppDetailsMapper()
+        return AppDetailsMapperImpl();
     };
 
     @Singleton
